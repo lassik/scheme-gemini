@@ -1,0 +1,7 @@
+;;; Emacs: this file uses -*- Scheme -*- syntax.
+
+;;; Information about Chicken 5 egg for henrietta-cache.
+
+(repo git "git://github.com/lassik/scheme-{egg-name}.git")
+(uri targz "https://github.com/lassik/scheme-{egg-name}/tarball/{egg-release}")
+(release "0.1")

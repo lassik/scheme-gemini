@@ -1,7 +1,6 @@
-;;; -*- Scheme -*-
+;;; Emacs: this file uses -*- Scheme -*- syntax.
 
-;;; This file is used by the CHICKEN 5 extension manager
-;;; (chicken-install)
+;;; Information about Chicken 5 egg for chicken-install.
 
 ((synopsis "Client library for the gemini:// protocol")
  (category net)
