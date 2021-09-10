@@ -1,10 +1,11 @@
-(import (scheme base) (srfi 193) (gemini-client))
+(import (scheme base) (scheme process-context) (srfi 193) (gemini-client))
 
 (define (display-gemini-error err)
-  (parameterize ((current-output-port (current-error-port)))
-    (display "*** Error: ")
-    (display (gemini-response-code (gemini-error-response err)))
-    (newline)))
+  (let ((response (gemini-error-response err)))
+    (write-string
+     (string-append (gemini-response-meta response) "\n")
+     (current-error-port))
+    (exit (gemini-response-code response))))
 
 (define (main)
   (unless (= 1 (length (command-args)))
