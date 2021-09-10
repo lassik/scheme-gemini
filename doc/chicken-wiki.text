@@ -1,0 +1,133 @@
+[[tags: egg]]
+
+== gemini-client
+
+[[toc:]]
+
+=== Introduction
+
+This egg provides a client library for the featherweight hypertext
+transfer protocol, [[https://gemini.circumlunar.space/|Gemini]].
+
+Features:
+
+* Interprets {{gemini://}} URLs using the {{uri-generic}} egg.
+* Handles Gemini's compulsory TLS encryption using the {{openssl}} egg.
+* Parses the response header into a Scheme record.
+* Provides a condition type for unsuccessful Gemini responses.
+
+Gemini's standard markup language, Gemtext, is not parsed by this egg.
+
+=== Make a request
+
+<procedure>(gemini-get uri handle-response)</procedure>
+
+Make a TLS-encrypted connection to the Gemini server at the host and
+port of {{uri}} (the default port is 1965). Ask for {{uri}} and call
+the procedure {{handle-response}} with the response object as an
+argument.
+
+{{uri}} must be a {{gemini://}} URI. It can be either a string or a
+URI object from the {{uri-generic}} egg.
+
+=== Response object
+
+<procedure>(gemini-response? object)</procedure>
+
+Return {{#t}} if {{object}} is a Gemini response object, {{#f}}
+otherwise.
+
+<procedure>(gemini-response-code response)</procedure>
+
+Return the two-digit code at the very beginning of a Gemini response
+as a integer.
+
+<procedure>(gemini-response-first-digit response)</procedure>
+<procedure>(gemini-response-second-digit response)</procedure>
+
+Return either digit of the code as an integer. The first digit
+indicates the response category, the second is a detail.
+
+<procedure>(gemini-response-success? response)</procedure>
+
+Return {{#t}} if this is a success response (code 2x), {{#f}}
+otherwise.
+
+<procedure>(gemini-response-redirect? response)</procedure>
+
+Return {{#t}} if this is a redirect response (code 3x), {{#f}}
+otherwise.
+
+<procedure>(gemini-response-meta response)</procedure>
+
+Return the "meta" text: the remainder of the first line of the
+response after the status code.
+
+<procedure>(gemini-response-port response)</procedure>
+
+Return a binary input port from which the response body can be read.
+The caller should not close the port.
+
+<procedure>(gemini-response-read-bytevector-all response)</procedure>
+<procedure>(gemini-response-read-string-all response)</procedure>
+
+Convenience procedures to read the entire response body and return it
+as as bytevector or a string, respectively.
+
+<procedure>(gemini-response-raise response)</procedure>
+
+Convenience procedure which raises an appropriate exception unless
+{{response}} is a success ({{2x}}) response. The exception raised
+satisfies {{gemini-error?}}, and calling {{gemini-error-response}} on
+it returns {{response}}. If {{response}} is a success response,
+{{gemini-response-raise}} returns {{#f}}.
+
+=== Error object
+
+<procedure>(gemini-error? object)</procedure>
+
+Return {{#t}} if {{object}} is a Gemini error condition, {{#f}}
+otherwise.
+
+<procedure>(gemini-error-response gemini-error)</procedure>
+
+Return the Gemini response object (satisfies {{gemini-response?}})
+associated with the error, of {{#f}} if none.
+
+=== Example
+
+  (display (gemini-get
+            "gemini://gemini.circumlunar.space/capcom/"
+            (lambda (response)
+              (or (gemini-response-raise response)
+                  (gemini-response-read-string-all response)))))
+
+=== Version History
+
+* 0.1: First release.
+
+=== Author
+
+Lassi Kortela
+
+=== Repository
+
+[[https://github.com/lassik/scheme-gemini-client|
+https://github.com/lassik/scheme-gemini-client]]
+
+=== License
+
+  Copyright 2021 Lassi Kortela
+
+  Permission to use, copy, modify, and distribute this software for any
+  purpose with or without fee is hereby granted, provided that the above
+  copyright notice and this permission notice appear in all copies.
+
+  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL
+  WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED
+  WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE
+  AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL
+  DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR
+  PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
+  TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+  PERFORMANCE OF THIS SOFTWARE.
