@@ -1,0 +1,18 @@
+;;; -*- Scheme -*-
+
+;;; This file is used by the CHICKEN 5 extension manager
+;;; (chicken-install)
+
+((synopsis "Client library for the gemini:// protocol")
+ (category net)
+ (license "ISC")
+ (author "Lassi Kortela")
+ (dependencies openssl r7rs uri-generic)
+ (distribution-files
+  "gemini-client.sld"
+  "gemini-client.egg"
+  "gemini-client.release-info")
+ (components
+  (extension gemini-client
+             (source "gemini-client.sld")
+             (csc-options "-R" "r7rs" "-X" "r7rs"))))
