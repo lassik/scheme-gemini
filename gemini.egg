@@ -18,4 +18,5 @@
              (csc-options "-R" "r7rs" "-X" "r7rs"))
   (extension gemini.client
              (source "gemini/client.sld")
-             (csc-options "-R" "r7rs" "-X" "r7rs"))))
+             (csc-options "-R" "r7rs" "-X" "r7rs")
+             (component-dependencies gemini))))
