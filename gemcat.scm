@@ -1,4 +1,5 @@
-(import (scheme base) (scheme process-context) (srfi 193) (gemini-client))
+(import (scheme base) (scheme process-context) (srfi 193)
+        (gemini) (gemini client))
 
 (define (display-gemini-error err)
   (let ((response (gemini-error-response err)))

@@ -1,7 +1,7 @@
-(define-library (gemini-client)
-  (export gemini-get
-          gemini-error?
+(define-library (gemini)
+  (export gemini-error?
           gemini-error-response
+          make-gemini-response
           gemini-response?
           gemini-response-code
           gemini-response-first-digit
@@ -12,7 +12,8 @@
           gemini-response-port
           gemini-response-read-bytevector-all
           gemini-response-read-string-all
-          gemini-response-raise)
+          gemini-response-raise
+          read-cr-lf-terminated-line)
   (import (scheme base))
   (cond-expand
     (chicken
@@ -78,35 +79,4 @@
                     (if (char=? #\newline char)
                         line
                         (malformed-first-line line)))
-                  (loop (string-append line (string char))))))))
-
-    (define (write-request to-server uri-string)
-      (write-string (string-append uri-string "\r\n") to-server))
-
-    (define (read-response from-server)
-      (let ((line (read-cr-lf-terminated-line from-server)))
-        (if (or (< (string-length line) 3)
-                (not (char<=? #\0 (string-ref line 0) #\9))
-                (not (char<=? #\0 (string-ref line 1) #\9))
-                (not (char=? #\space (string-ref line 2))))
-            (malformed-first-line line)
-            (let ((code (string->number (string-copy line 0 2)))
-                  (meta (string-copy line 3 (string-length line))))
-              (make-gemini-response code meta from-server)))))
-
-    (define (gemini-get uri handle-response)
-      (let* ((uri-object (uri-reference uri))
-             (uri-string (if (string? uri) uri (uri->string uri-object))))
-        (unless (eq? 'gemini (uri-scheme uri-object))
-          (error "Not a gemini URI" uri))
-        (let-values (((from-server to-server)
-                      (ssl-connect* hostname: (uri-host uri-object)
-                                    port: (or (uri-port uri-object) 1965)
-                                    verify?: #f)))
-          (dynamic-wind (lambda () #f)
-                        (lambda ()
-                          (write-request to-server uri-string)
-                          (handle-response (read-response from-server)))
-                        (lambda ()
-                          (close-input-port from-server)
-                          (close-output-port to-server))))))))
+                  (loop (string-append line (string char))))))))))

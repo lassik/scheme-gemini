@@ -8,10 +8,14 @@
  (author "Lassi Kortela")
  (dependencies openssl r7rs uri-generic)
  (distribution-files
-  "gemini-client.sld"
-  "gemini-client.egg"
-  "gemini-client.release-info")
+  "gemini.sld"
+  "gemini/client.sld"
+  "gemini.egg"
+  "gemini.release-info")
  (components
-  (extension gemini-client
-             (source "gemini-client.sld")
+  (extension gemini
+             (source "gemini.sld")
+             (csc-options "-R" "r7rs" "-X" "r7rs"))
+  (extension gemini.client
+             (source "gemini/client.sld")
              (csc-options "-R" "r7rs" "-X" "r7rs"))))
