@@ -1,16 +1,15 @@
 [[tags: egg]]
 
-== gemini-client
+== gemini
 
 [[toc:]]
 
 === Introduction
 
-This egg provides a client library for the featherweight hypertext
-transfer protocol, [[https://gemini.circumlunar.space/|Gemini]].
+This egg provides the following support for the featherweight hypertext
+transfer protocol, [[https://gemini.circumlunar.space/|Gemini]]:
 
-Features:
-
+* Makes requests to Gemini servers (i.e. Gemini client).
 * Interprets {{gemini://}} URLs using the {{uri-generic}} egg.
 * Handles Gemini's compulsory TLS encryption using the {{openssl}} egg.
 * Parses the response header into a Scheme record.
@@ -112,8 +111,8 @@ Lassi Kortela
 
 === Repository
 
-[[https://github.com/lassik/scheme-gemini-client|
-https://github.com/lassik/scheme-gemini-client]]
+[[https://github.com/lassik/scheme-gemini|
+https://github.com/lassik/scheme-gemini]]
 
 === License
 
