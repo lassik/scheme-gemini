@@ -10,14 +10,14 @@ This egg provides the following support for the featherweight hypertext
 transfer protocol, [[https://gemini.circumlunar.space/|Gemini]]:
 
 * Makes requests to Gemini servers (i.e. Gemini client).
-* Interprets {{gemini://}} URLs using the {{uri-generic}} egg.
-* Handles Gemini's compulsory TLS encryption using the {{openssl}} egg.
+* Interprets {{gemini://}} URLs using the [[uri-generic]] egg.
+* Handles Gemini's compulsory TLS encryption using the [[openssl]] egg.
 * Parses the response header into a Scheme record.
 * Provides a condition type for unsuccessful Gemini responses.
 
 Gemini's standard markup language, Gemtext, is not parsed by this egg.
 
-=== Make a request
+=== The (gemini client) library
 
 <procedure>(gemini-get uri handle-response)</procedure>
 
@@ -27,9 +27,11 @@ the procedure {{handle-response}} with the response object as an
 argument.
 
 {{uri}} must be a {{gemini://}} URI. It can be either a string or a
-URI object from the {{uri-generic}} egg.
+URI object from the [[uri-generic]] egg.
 
-=== Response object
+=== The (gemini) library
+
+==== Response object
 
 <procedure>(gemini-response? object)</procedure>
 
@@ -81,7 +83,7 @@ satisfies {{gemini-error?}}, and calling {{gemini-error-response}} on
 it returns {{response}}. If {{response}} is a success response,
 {{gemini-response-raise}} returns {{#f}}.
 
-=== Error object
+==== Error object
 
 <procedure>(gemini-error? object)</procedure>
 
