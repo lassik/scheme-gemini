@@ -28,6 +28,7 @@
         (let-values (((from-server to-server)
                       (ssl-connect* hostname: (uri-host uri-object)
                                     port: (or (uri-port uri-object) 1965)
+                                    protocol: (cons 'tlsv12 ssl-max-protocol)
                                     verify?: #f)))
           (dynamic-wind (lambda () #f)
                         (lambda ()
