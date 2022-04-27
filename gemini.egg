@@ -6,7 +6,7 @@
  (category net)
  (license "ISC")
  (author "Lassi Kortela")
- (dependencies openssl r7rs uri-generic)
+ (dependencies (openssl "2.2.0") r7rs uri-generic)
  (distribution-files
   "gemini.sld"
   "gemini/client.sld"
